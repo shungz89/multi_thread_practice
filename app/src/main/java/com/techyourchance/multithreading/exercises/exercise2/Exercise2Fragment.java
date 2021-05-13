@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Exercise2Fragment extends BaseFragment {
 
     public static Fragment newInstance() {
@@ -22,6 +24,8 @@ public class Exercise2Fragment extends BaseFragment {
     }
 
     private byte[] mDummyData;
+    private final AtomicBoolean mCountAbort = new AtomicBoolean(false);
+
 
     @Nullable
     @Override
@@ -39,6 +43,8 @@ public class Exercise2Fragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
+        mCountAbort.set(true);
+
     }
 
     @Override
@@ -47,6 +53,9 @@ public class Exercise2Fragment extends BaseFragment {
     }
 
     private void countScreenTime() {
+
+        mCountAbort.set(false);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -55,11 +64,22 @@ public class Exercise2Fragment extends BaseFragment {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
-                        return;
+                        break;
+                        //Example answer given is return, but break make more sense
+                        //return;
+                    }
+
+                    //if mCountAbort is true, then we should break out from this while loop
+                    if (mCountAbort.get()) {
+                        break;
+                        //Example answer given is return, but break make more sense
+                        //return;
                     }
                     screenTimeSeconds++;
                     Log.d("Exercise 2", "screen time: " + screenTimeSeconds + "s");
                 }
+
+
             }
         }).start();
     }
