@@ -17,8 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 
 @SuppressLint("SetTextI18n")
 public class AtomicityDemonstrationFragment extends BaseFragment {
@@ -35,12 +33,7 @@ public class AtomicityDemonstrationFragment extends BaseFragment {
 
     private Handler mUiHandler = new Handler(Looper.getMainLooper());
 
-    //Original
-//    private volatile int mCount;
-
-    //To Fix it we change to AtomicInteger
-    private volatile AtomicInteger mCount = new AtomicInteger(0);
-
+    private volatile int mCount;
 
     @Nullable
     @Override
@@ -76,12 +69,7 @@ public class AtomicityDemonstrationFragment extends BaseFragment {
     }
 
     private void startCount() {
-        //Original
-//        mCount = 0;
-
-        //Modified
-        mCount.set(0);
-
+        mCount = 0;
         mTxtFinalCount.setText("");
         mBtnStartCount.setEnabled(false);
 
@@ -103,10 +91,7 @@ public class AtomicityDemonstrationFragment extends BaseFragment {
             @Override
             public void run() {
                 for (int i = 0; i < COUNT_UP_TO; i++) {
-                    //Original
-//                    mCount++;
-                    //Modified
-                    mCount.getAndIncrement();
+                    mCount++;
                 }
             }
         }).start();

@@ -2,11 +2,7 @@ package com.techyourchance.multithreading.demonstrations.visibility;
 
 public class VisibilityDemonstration {
 
-    //Original
-//    private static int sCount = 0;
-
-    //Modified
-    private static volatile int sCount = 0;
+    private static int sCount = 0;
 
 
     public static void main(String[] args) {
